@@ -1,6 +1,6 @@
 # Introduction 
 A set of network tools in a container for k8s network troubleshooting and testing, based on Alpine Linux.  
-The idea and initial dockerfile were taken from [Network-Multitool](https://hub.docker.com/r/praqma/network-multitool) and adopted to enterprise k8s security requirements and limitations.  
+The idea and initial dockerfile were taken from [Network-Multitool](https://github.com/Praqma/Network-MultiTool) and adopted to enterprise k8s security requirements and limitations.  
 Such requirements include `spec.securityContext.runAsNonRoot=true`, nginx starting from non-root username and port 8080 as a result.  
 [The list of tools](#tools-included) includes `aws` S3 command line client, `tcpdump` and some others.  
 Please pay attention that some of them can not be used in runAsNonRoot mode.
