@@ -1,0 +1,26 @@
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: net-utils
+spec:
+  securityContext:
+    # runAsNonRoot: false
+    runAsUser: 101
+    # runAsGroup: 1000
+    # fsGroup: 3000
+  containers:
+  - name: net-utils
+    image: docker.artifactory2.companyname.co.nz/net-utils
+    # env:
+    #   - name: UID
+    #     value: nginx
+    #   - name: GID
+    #     value: nginx
+    resources:
+      limits:
+        memory: "256Mi"
+        cpu: "100m"
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
