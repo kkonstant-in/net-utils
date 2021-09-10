@@ -21,14 +21,15 @@ RUN set -x \
     &&  openssl req \
         -x509 -newkey rsa:2048 -nodes -days 3650 \
         -keyout /certs/server.key -out /certs/server.crt -subj '/CN=localhost' \
-    # forward request and error logs to docker log collector
-    && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log \
-    # implement changes required to run NGINX as an unprivileged user
-    && sed -i '/user nginx;/d' /etc/nginx/nginx.conf \
-    && sed -i 's/80\ default_server/8080\ default_server/g' /etc/nginx/http.d/default.conf \
+    # # The following was replaced by overwriting the nginx.conf in docker-entrypoint.sh
+    # ## forward request and error logs to docker log collector
+    # && ln -sf /dev/stdout /var/log/nginx/access.log \
+    # && ln -sf /dev/stderr /var/log/nginx/error.log \
+    # ## implement changes required to run NGINX as an unprivileged user
+    # && sed -i '/user nginx;/d' /etc/nginx/nginx.conf \
+    # && sed -i 's/80\ default_server/8080\ default_server/g' /etc/nginx/http.d/default.conf \
     # && sed -i 's,/var/run/nginx.pid,/run/nginx/nginx.pid,' /etc/nginx/nginx.conf \
-    # nginx user must own the cache and etc directory to write cache and tweak the nginx config
+    ## nginx user must own the cache and etc directory to write cache and tweak the nginx config
     && mkdir -p /var/cache/nginx/html /run/nginx \
     && chown -R $UID:0 /etc/nginx /var/cache/nginx /run/nginx /certs \
     && chmod -R g+w /etc/nginx /var/cache/nginx /run/nginx
