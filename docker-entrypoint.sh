@@ -1,13 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env sh
+
+set -euo pipefail
 
 echo -e "$(env)\n----------------------------"
 
 # If the html directory is mounted, it means user has mounted some content in it.
 # In that case, we must not over-write the index.html file.
 WEB_ROOT=/var/cache/nginx/html
-MOUNT_CHECK=$(mount | grep ${WEB_ROOT})
 
-if [ -z "${MOUNT_CHECK}" ] ; then
+if [ -z $(mount | grep ${WEB_ROOT}) ] ; then
   echo "The directory ${WEB_ROOT} is not mounted."
   echo "Over-writing the default index.html file with some information."
   HOSTNAME=$(hostname)
@@ -88,22 +89,24 @@ http {
 EOF
 
 # If the env variables HTTP_PORT and HTTPS_PORT are not defined, then the default HTTP_PORT 8080 is used.
+HTTP_PORT=${HTTP_PORT:=8080}
+HTTPS_PORT=${HTTPS_PORT:=8443}
+
 # If they are less than 1025 then nginx require root privileges to start
 if [[ "${HTTP_PORT}" < 1025 || "${HTTPS_PORT}" < 1025 ]]; then
   sed -i '1 a user nginx;' /etc/nginx/nginx.conf
 fi
 
 # If these variables are defined, then modify default listening ports to the defined values.
-if [ -n "${HTTP_PORT}" ]; then
-  echo "Replacing default HTTP port (8080) with the value specified by the user - (HTTP_PORT: ${HTTP_PORT})."
+if [[ ${HTTP_PORT} != 8080 ]]; then
+  echo "Replacing default HTTP_PORT=8080 with the value specified by the user: HTTP_PORT=${HTTP_PORT}"
   sed -i "s/8080/${HTTP_PORT}/g" /etc/nginx/nginx.conf
 fi
 
-if [ -n "${HTTPS_PORT}" ]; then
-  echo "Replacing default HTTPS port (8443) with the value specified by the user - (HTTPS_PORT: ${HTTPS_PORT})."
+if [[ ${HTTPS_PORT} != 8443 ]]; then
+  echo "Replacing default HTTPS_PORT=8443 with the value specified by the user: HTTPS_PORT=${HTTPS_PORT}"
   sed -i "s/8443/${HTTPS_PORT}/g" /etc/nginx/nginx.conf
 fi
-
 
 # Execute the command specified as CMD in Dockerfile:
 exec "$@"
