@@ -90,7 +90,7 @@ EOF
 # If the env variables HTTP_PORT and HTTPS_PORT are not defined, then the default HTTP_PORT 8080 is used.
 # If they are less than 1025 then nginx require root privileges to start
 if [[ "${HTTP_PORT}" < 1025 || "${HTTPS_PORT}" < 1025 ]]; then
-  sed '1 a user nginx;'
+  sed -i '1 a user nginx;' /etc/nginx/nginx.conf
 fi
 
 # If these variables are defined, then modify default listening ports to the defined values.
