@@ -4,6 +4,8 @@ The idea and initial dockerfile were taken from [Network-Multitool](https://gith
 Such requirements include `spec.securityContext.runAsNonRoot=true`, nginx starting from non-root username and port 8080 as a result.  
 [The list of tools](#tools-included) includes `aws` S3 command line client, `tcpdump` and some others.  
 Please pay attention that some of them can not be used in runAsNonRoot mode.
+# Docker Hub
+https://hub.docker.com/r/kkonstant/net-utils/
 # Tools included
 - apk package manager
 - nginx (port 8080) - customizable ports
@@ -17,7 +19,7 @@ Please pay attention that some of them can not be used in runAsNonRoot mode.
 - gzip, cpio
 - command line clients: aws, telnet, ssh, ftp, rsync, scp, git, mysql, postgresql
 - ApacheBench (ab)
-# Usage - on Kubernetes
+# Usage on Kubernetes
 ```bash
 kubectl run net-utils --image=kkonstant/net-utils --replicas=1
 ```
@@ -27,11 +29,11 @@ It may also require securityContext and resources specified.
 nano k8s/net-utils.yml # edit accordingly
 kubectl -n namespace apply -f k8s/net-utils.yml
 ```
-# Usage - on Docker
+# Usage on Docker
 ```bash
 docker run --rm -it kkonstant/net-utils /bin/bash
 # OR
-docker run --name net-utils --rm -d net-utils:2.1
+docker run --name net-utils --rm -d net-utils:2.3
 docker exec -it net-utils bash
 # OR
 docker run -e HTTP_PORT=1080 -e HTTPS_PORT=1443 -p 1080:1080 -p 1443:1443 -d kkonstant/net-utils
@@ -39,7 +41,7 @@ docker run -e HTTP_PORT=1080 -e HTTPS_PORT=1443 -p 1080:1080 -p 1443:1443 -d kko
 # Build and Push to dockerhub instructions
 ```
 docker build -t net-utils .
-docker tag net-utils kkonstant/net-utils:2.2
+docker tag net-utils kkonstant/net-utils:2.3
 docker tag net-utils kkonstant/net-utils:latest
 docker login
 docker push kkonstant/net-utils
@@ -47,7 +49,7 @@ docker push kkonstant/net-utils
 # Build and Push to local artifactory instructions
 ```bash
 docker build -t net-utils .
-docker tag net-utils docker.artifactory2.companyname.co.nz/net-utils:2.1
+docker tag net-utils docker.artifactory2.companyname.co.nz/net-utils:2.3
 docker tag net-utils docker.artifactory2.companyname.co.nz/net-utils:latest
 docker login https://docker.artifactory2.companyname.co.nz/docker-companyname-local/ # for init only
 docker push docker.artifactory2.companyname.co.nz/net-utils
