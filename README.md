@@ -1,14 +1,15 @@
 # Introduction 
 A set of network tools in a container for k8s network troubleshooting and testing, based on Alpine Linux.  
-The idea and initial dockerfile were taken from [Network-Multitool](https://github.com/Praqma/Network-MultiTool) and adopted to enterprise k8s security requirements and limitations.  
-Such requirements include `spec.securityContext.runAsNonRoot=true`, nginx starting from non-root username and port 8080 as a result.  
+  
+The idea and initial dockerfile were inspired by [Network-Multitool](https://github.com/Praqma/Network-MultiTool) and adopted to enterprise k8s security requirements and limitations. Such requirements include `spec.securityContext.runAsNonRoot=true`, nginx starting from non-root username and unprivileged ports (8080,8443) as a result.  
+  
 [The list of tools](#tools-included) includes `aws` S3 command line client, `tcpdump` and some others.  
 Please pay attention that some of them can not be used in runAsNonRoot mode.
 # Docker Hub
 https://hub.docker.com/r/kkonstant/net-utils/
 # Tools included
 - apk package manager
-- nginx (port 8080) - customizable ports
+- nginx customizable ports (default http=8080,https=8443)
 - curl, wget
 - dig, nslookup
 - ip, ifconfig, ethtool, mii-tool, route
