@@ -39,7 +39,8 @@ docker run -e HTTP_PORT=1080 -e HTTPS_PORT=1443 -p 1080:1080 -p 1443:1443 -d kko
 # Build and Push to dockerhub instructions
 ```
 docker build -t net-utils .
-docker tag net-utils kkonstant/net-utils
+docker tag net-utils kkonstant/net-utils:2.2
+docker tag net-utils kkonstant/net-utils:latest
 docker login
 docker push kkonstant/net-utils
 ```
